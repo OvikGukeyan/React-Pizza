@@ -1,5 +1,5 @@
 import './App.css';
-import {Header} from './components/Header';
+import { Categories, Header } from './components';
 import {PizzaBlock} from './components/PizzaBlock/PizzaBlock';
 
 function App() {
@@ -9,16 +9,9 @@ function App() {
       <div className="content">
         <div className="container">
           <div className="content__top">
-            <div className="categories">
-              <ul>
-                <li className="active">Все</li>
-                <li>Мясные</li>
-                <li>Вегетарианская</li>
-                <li>Гриль</li>
-                <li>Острые</li>
-                <li>Закрытые</li>
-              </ul>
-            </div>
+            <Categories
+              items={['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']}
+            />
             <div className="sort">
               <div className="sort__label">
                 <svg
@@ -47,8 +40,8 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-          {[...Array(8)].map(arr => (
-            <PizzaBlock/>
+          {[...Array(8)].map((arr, index) => (
+            <PizzaBlock key={index}/>
           ))}
             
           </div>
