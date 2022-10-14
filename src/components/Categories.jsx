@@ -17,7 +17,8 @@ export const Categories = ({ items }) => {
                         <li
                             onClick={() => choiceCategories(index)}
                             className={index === isActive ? 'active' : ''}
-                            key={`${item}_${index}`}>{item}</li>
+                            key={`${item}_${index}`}
+                        >{item}</li>
                     ))}
             </ul>
         </div>
