@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCategory } from "../redux/slices/filtersSlice";
+import { setCategory } from "../redux/slices/filtersSlice";
 
 export const Categories = ({ items }) => {
+    const dispatch = useDispatch();
+    const category = useSelector(selectCategory);
 
-    const [isActive, setIsActive] = useState(0);
 
     const choiceCategories = (index) => {
-        setIsActive(index)
+        dispatch(setCategory(index))
     }
 
     return (
@@ -16,7 +19,7 @@ export const Categories = ({ items }) => {
                     items.map((item, index) => (
                         <li
                             onClick={() => choiceCategories(index)}
-                            className={index === isActive ? 'active' : ''}
+                            className={index === category ? 'active' : ''}
                             key={`${item}_${index}`}
                         >{item}</li>
                     ))}

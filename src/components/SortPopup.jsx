@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { selectSortBy, setSortBy } from "../redux/slices/filtersSlice";
 
 export const SortPopup = ({ items }) => {
-
-    const [selectedPopup, setSelectedPopup] = useState(0);
+    const dispatch = useDispatch();
+    const sortBy = useSelector(selectSortBy);
+    
     const [visiblePopup, setVisiblePopup] = useState(false);
     const sortRef = useRef();
 
@@ -21,8 +24,8 @@ export const SortPopup = ({ items }) => {
     };
 
     const choicePopup = (index) => {
-        setSelectedPopup(index);
         setVisiblePopup(false);
+        dispatch(setSortBy(index));
     }
 
 
@@ -43,16 +46,16 @@ export const SortPopup = ({ items }) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={toggleVisiablePopup}>{items[selectedPopup]}</span>
+                <span onClick={toggleVisiablePopup}>{items[sortBy].name}</span>
             </div>
             {visiblePopup &&
                 <div className="sort__popup">
                     <ul>
-                        {items.map((item, index) => (
+                        {items.map((obj, index) => (
                             <li
                                 onClick={() => choicePopup(index)}
-                                key={`${item}_${index}`} className={index === selectedPopup ? 'active' : ''}
-                            >{item}</li>
+                                key={`${obj.name}_${index}`} className={index === sortBy ? 'active' : ''}
+                            >{obj.name}</li>
                         ))}
 
                     </ul>
