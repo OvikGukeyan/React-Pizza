@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { useState, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { selectSortBy, setSortBy } from "../redux/slices/filtersSlice";
 
-export const SortPopup = ({ items }) => {
+export const SortPopup = memo(({ items }) => {
     const dispatch = useDispatch();
     const sortBy = useSelector(selectSortBy);
     
@@ -62,4 +63,4 @@ export const SortPopup = ({ items }) => {
                 </div>}
         </div>
     )
-}
+})

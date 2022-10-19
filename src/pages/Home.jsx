@@ -8,20 +8,21 @@ import { selectCategory } from '../redux/slices/filtersSlice';
 export const Home = () => {
     const category = useSelector(selectCategory);
     const pizzas = useSelector(selectPizzas);
-    
+    const categoryNames = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
+    const sortItems = [
+        { name: 'популярности', type: 'popular' },
+        { name: 'цене', type: 'price' },
+        { name: 'алфавиту', type: 'alphabet' }
+    ]
 
     return (
         <div className="container">
             <div className="content__top">
                 <Categories
-                    items={['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']}
+                    items={categoryNames}
                 />
                 <SortPopup
-                    items={[
-                        { name: 'популярности', type: 'popular' },
-                        { name: 'цене', type: 'price' },
-                        { name: 'алфавиту', type: 'alphabet' }
-                    ]}
+                    items={sortItems}
                 />
             </div>
             <h2 className="content__title">Все пиццы</h2>

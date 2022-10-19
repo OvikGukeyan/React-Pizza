@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategory } from "../redux/slices/filtersSlice";
 import { setCategory } from "../redux/slices/filtersSlice";
 
-export const Categories = ({ items }) => {
+export const Categories = memo(({ items }) => {
     const dispatch = useDispatch();
     const category = useSelector(selectCategory);
 
@@ -26,4 +27,4 @@ export const Categories = ({ items }) => {
             </ul>
         </div>
     )
-}
+})
