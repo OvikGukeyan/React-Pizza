@@ -5,8 +5,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const filtersSlice = createSlice({
     name: 'filters',
     initialState: {
-        category: 0,
-        sortBy: 0,
+        category: null,
+        sortBy: {
+            type: 'popular',
+            order: 'desc'
+        },
     },
     reducers: {
         setSortBy: (state, action) => {

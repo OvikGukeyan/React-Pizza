@@ -1,9 +1,8 @@
-import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategory } from "../redux/slices/filtersSlice";
 import { setCategory } from "../redux/slices/filtersSlice";
 
-export const Categories = memo(({ items }) => {
+export const Categories = ({ items }) => {
     const dispatch = useDispatch();
     const category = useSelector(selectCategory);
 
@@ -16,6 +15,7 @@ export const Categories = memo(({ items }) => {
         <div className="categories">
 
             <ul>
+                <li className={category === null && 'active'} onClick={() => choiceCategories(null)}>Все</li>
                 {items &&
                     items.map((item, index) => (
                         <li
@@ -27,4 +27,4 @@ export const Categories = memo(({ items }) => {
             </ul>
         </div>
     )
-})
+}

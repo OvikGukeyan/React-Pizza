@@ -1,12 +1,12 @@
 import { useState } from "react";
 import  PropTypes  from "prop-types";
 
+
 export const PizzaBlock = ({ name, imageUrl, price, sizes, types=[] }) => {
     const allTypes = ["тонкое", "традиционное"];
     const allSizes = [26, 30, 40];
     const [activeType, setActiveType] = useState(types[0]);
     const [activeSize, setActiveSize] = useState(sizes[0]);
-
     const choiceSize = (size) => {
         setActiveSize(size)
     }
@@ -14,11 +14,12 @@ export const PizzaBlock = ({ name, imageUrl, price, sizes, types=[] }) => {
     const choiceType = (index) => {
         setActiveType(index)
     }
+    
+    
 
-
-
-
+    
     return (
+        
         <div className="pizza-block">
             <img
                 className="pizza-block__image"
