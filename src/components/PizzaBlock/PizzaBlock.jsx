@@ -1,8 +1,9 @@
 import { useState } from "react";
 import  PropTypes  from "prop-types";
+import { Button } from "../Button";
 
 
-export const PizzaBlock = ({ name, imageUrl, price, sizes, types=[] }) => {
+export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types=[], onAddPizza, addedCount }) => {
     const allTypes = ["тонкое", "традиционное"];
     const allSizes = [26, 30, 40];
     const [activeType, setActiveType] = useState(types[0]);
@@ -15,7 +16,17 @@ export const PizzaBlock = ({ name, imageUrl, price, sizes, types=[] }) => {
         setActiveType(index)
     }
     
-    
+    const onClickAddPizza = () => {
+        const obj = {
+            id,
+            name,
+            imageUrl,
+            price,
+            size: activeSize,
+            type: allTypes[activeType]
+        }
+        onAddPizza(obj)
+    }
 
     
     return (
@@ -47,10 +58,11 @@ export const PizzaBlock = ({ name, imageUrl, price, sizes, types=[] }) => {
                     ))}
                 </ul>
             </div>
+            
             <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {price} ₽</div>
-                <div className="button button--outline button--add">
-                    <svg
+                <Button onClick={onClickAddPizza} className={"button--outline button--add"}>
+                <svg
                         width="12"
                         height="12"
                         viewBox="0 0 12 12"
@@ -63,8 +75,9 @@ export const PizzaBlock = ({ name, imageUrl, price, sizes, types=[] }) => {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>2</i>
-                </div>
+                    {addedCount && <i>{addedCount}</i>}
+                </Button>
+                
             </div>
         </div>
     )

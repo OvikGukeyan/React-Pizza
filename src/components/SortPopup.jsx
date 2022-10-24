@@ -1,10 +1,6 @@
 import { useState, useRef, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { selectSortBy, setSortBy } from "../redux/slices/filtersSlice";
 
-export const SortPopup = ({ items }) => {
-    const dispatch = useDispatch();
-    const sortBy = useSelector(selectSortBy);
+export const SortPopup = ({ items, hendleChoicePopup, sortBy }) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
     const sortRef = useRef();
@@ -25,7 +21,7 @@ export const SortPopup = ({ items }) => {
 
     const choicePopup = ({type, order}) => {
         setVisiblePopup(false);
-        dispatch(setSortBy({type, order}));
+        hendleChoicePopup({type, order})
     }
 
 

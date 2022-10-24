@@ -1,25 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
-import { selectCategory } from "../redux/slices/filtersSlice";
-import { setCategory } from "../redux/slices/filtersSlice";
-
-export const Categories = ({ items }) => {
-    const dispatch = useDispatch();
-    const category = useSelector(selectCategory);
-
-
-    const choiceCategories = (index) => {
-        dispatch(setCategory(index))
-    }
-
+export const Categories = ({ items, helnleChoiceCategorie, category }) => {
     return (
         <div className="categories">
 
             <ul>
-                <li className={category === null && 'active'} onClick={() => choiceCategories(null)}>Все</li>
+                <li className={category === null && 'active'} onClick={() => helnleChoiceCategorie(null)}>Все</li>
                 {items &&
                     items.map((item, index) => (
                         <li
-                            onClick={() => choiceCategories(index)}
+                            onClick={() => helnleChoiceCategorie(index)}
                             className={index === category ? 'active' : ''}
                             key={`${item}_${index}`}
                         >{item}</li>
