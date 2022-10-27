@@ -25,7 +25,7 @@ export const Home = () => {
         dispatch(fetchPizzas(sortBy, category))
     }, [category, sortBy]);
 
-    const hendleChoicePopup = (type, order) => {
+    const handleChoicePopup = (type, order) => {
         dispatch(setSortBy(type, order))
     }
 
@@ -34,7 +34,6 @@ export const Home = () => {
     }
 
     const onAddPizza = (obj) => {
-        console.log(obj)
         dispatch(setCartItems(obj))
     }
 
@@ -48,7 +47,7 @@ export const Home = () => {
                 />
                 <SortPopup
                     items={sortItems}
-                    hendleChoicePopup={hendleChoicePopup}
+                    handleChoicePopup={handleChoicePopup}
                     sortBy={sortBy}
                     helnleChoiceCategorie={helnleChoiceCategorie}
                 />
@@ -61,7 +60,7 @@ export const Home = () => {
                         <PizzaBlock
                             onAddPizza={onAddPizza}
                             key={obj.id}
-                            addedCount={cartItems[obj.id] && cartItems[obj.id].length}
+                            addedCount={cartItems[obj.id] && cartItems[obj.id].items.length}
                             {...obj}
                         />
                     )) : [...Array(10)].map((_, index) => <Loading key={index} />)}

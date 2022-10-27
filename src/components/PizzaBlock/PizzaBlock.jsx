@@ -85,8 +85,11 @@ export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types=[], onAddPi
 
 PizzaBlock.prototype = {
     name: PropTypes.string.isRequired, 
+    id: PropTypes.number.isRequired,
     imageUrl: PropTypes.string.isRequired, 
     price: PropTypes.number.isRequired, 
     sizes: PropTypes.arrayOf([PropTypes.number.isRequired]).isRequired,
-    types: PropTypes.arrayOf([PropTypes.number.isRequired]).isRequired
+    types: PropTypes.arrayOf([PropTypes.number.isRequired]).isRequired,
+    onAddPizza: PropTypes.func.isRequired, 
+    addedCount: PropTypes.number.isRequired
 }

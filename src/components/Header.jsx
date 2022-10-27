@@ -10,7 +10,7 @@ export const Header = () => {
     return (
         <div className="header">
             <div className="container">
-                <Link to={''}>
+                <Link to=''>
                     <div className="header__logo">
                         <img width="38" src={logo} alt="Pizza logo" />
                         <div>
@@ -21,7 +21,7 @@ export const Header = () => {
                 </Link>
 
 
-                <Link to={'cart'}>
+                <Link to='cart'>
                     <div className="header__cart">
                         <Button className={'button--cart'} >
                         <span>{totalPrice} ₽</span>

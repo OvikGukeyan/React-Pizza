@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getTotalPrice = arr => arr.reduce((sum, obj) => obj.price + sum, 0);
+
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {
@@ -10,20 +12,56 @@ const cartSlice = createSlice({
     reducers: {
         setCartItems: (state, action) => {
             !state.items[action.payload.id] ?
-            state.items[action.payload.id] = [action.payload]
-            : state.items[action.payload.id] = [...state.items[action.payload.id], action.payload];
-            state.totalCount = [].concat.apply([], Object.values(state.items)).length;
-            state.totalPrice = [].concat.apply([], Object.values(state.items)).reduce((sum, obj) => obj.price + sum, 0);
-        }, 
-        setTotalPrice: (state, action) => {
-            state.totalPrice = action.payload;
+                state.items[action.payload.id] = { items: [action.payload] }
+                : state.items[action.payload.id].items = [...state.items[action.payload.id].items, action.payload];
+            state.items[action.payload.id].total = getTotalPrice(state.items[action.payload.id].items);
+            state.items[action.payload.id].count = state.items[action.payload.id].items.length;
+            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
+            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
         },
-        
+        clearCartItems: (state) => {
+            if (window.confirm('Are you sure you want to clear the cart?')) {
+                state.items = {};
+                state.totalCount = 0;
+                state.totalPrice = 0;
+            }
+
+        },
+
+        deleteItem: (state, action) => {
+            delete state.items[action.payload];
+            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
+            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
+        },
+
+        itemPlus: (state, action) => {
+            state.items[action.payload.id].items.push(action.payload);
+            state.items[action.payload.id].total = getTotalPrice(state.items[action.payload.id].items);
+            state.items[action.payload.id].count = state.items[action.payload.id].items.length;
+            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
+            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
+        },
+
+        itemMinus: (state, action) => {
+            if (state.items[action.payload].items.length > 1) {
+                state.items[action.payload].items.splice(0, 1)
+                state.items[action.payload].total = getTotalPrice(state.items[action.payload].items);
+                state.items[action.payload].count = state.items[action.payload].items.length;
+
+            } else {
+                delete state.items[action.payload];
+            }
+
+
+            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
+            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
+        }
+
     }
 });
 
 export const selectTotalPrice = (state) => state.cart.totalPrice;
 export const selectTotalCount = (state) => state.cart.totalCount;
 export const selectCartItems = (state) => state.cart.items;
-export const {setTotalPrice, setTotalCount, setCartItems} = cartSlice.actions;
+export const { setCartItems, clearCartItems, deleteItem, itemPlus, itemMinus } = cartSlice.actions;
 export default cartSlice.reducer;

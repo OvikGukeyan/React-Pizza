@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 
-export const SortPopup = ({ items, hendleChoicePopup, sortBy }) => {
+export const SortPopup = ({ items, handleChoicePopup, sortBy }) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
     const sortRef = useRef();
@@ -21,7 +21,7 @@ export const SortPopup = ({ items, hendleChoicePopup, sortBy }) => {
 
     const choicePopup = ({type, order}) => {
         setVisiblePopup(false);
-        hendleChoicePopup({type, order})
+        handleChoicePopup({type, order})
     }
 
 

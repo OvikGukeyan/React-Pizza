@@ -1,13 +1,35 @@
-import { array } from "prop-types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CartPizzaBlock } from "../components/CartPizzaBlock";
-import { selectCartItems } from "../redux/slices/cartSlice";
+import { clearCartItems, deleteItem, itemMinus, itemPlus, selectCartItems, selectTotalCount, selectTotalPrice } from "../redux/slices/cartSlice";
+import emptyCartImg  from "../assets/img/empty-cart.png";
+import { Link } from "react-router-dom";
 
 export const Cart = () => {
-  const cartItems = useSelector(selectCartItems)
-  console.log(cartItems)
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  const totalPrice = useSelector(selectTotalPrice);
+  const totalCount = useSelector(selectTotalCount);
+
+  const clearCart = () => {
+    dispatch(clearCartItems())
+  }
+
+  const onDeleteItem = (id) => {
+    dispatch(deleteItem(id))
+  }
+
+  const onItemPlus = (obj) => {
+    dispatch(itemPlus(obj))
+  }
+
+  const onItemMinus = (id) => {
+    dispatch(itemMinus(id))
+  }
+
+  const addedPizzas = Object.keys(cartItems).map(key => cartItems[key].items[0])
   return (
-      <div className="container container--cart">
+    <div className="container container--cart">
+      {totalCount ?
         <div className="cart">
           <div className="cart__top">
             <h2 className="content__title"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,17 +46,26 @@ export const Cart = () => {
                 <path d="M11.6666 9.16667V14.1667" stroke="#B6B6B6" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
 
-              <span>Очистить корзину</span>
+              <span onClick={clearCart}>Очистить корзину</span>
             </div>
           </div>
           <div className="content__items">
-          {}
-          <CartPizzaBlock/>
+            {addedPizzas.map(obj =>
+              <CartPizzaBlock
+                {...obj}
+                key={obj.id}
+                total={cartItems[obj.id].total}
+                count={cartItems[obj.id].count}
+                clearCart={clearCart}
+                onDeleteItem={onDeleteItem}
+                onItemPlus={onItemPlus}
+                onItemMinus={onItemMinus}
+              />)}
           </div>
           <div className="cart__bottom">
             <div className="cart__bottom-details">
-              <span> Всего пицц: <b>3 шт.</b> </span>
-              <span> Сумма заказа: <b>900 ₽</b> </span>
+              <span> Всего пицц: <b>{totalCount} шт.</b> </span>
+              <span> Сумма заказа: <b>{totalPrice} ₽</b> </span>
             </div>
             <div className="cart__bottom-buttons">
               <a href="/" className="button button--outline button--add go-back-btn">
@@ -50,6 +81,19 @@ export const Cart = () => {
             </div>
           </div>
         </div>
-      </div>
+        : 
+        <div className="cart cart--empty">
+            <h2>Корзина пустая <icon>😕</icon></h2>
+            <p>
+                Вероятней всего, вы не заказывали ещё пиццу.<br />
+                Для того, чтобы заказать пиццу, перейди на главную страницу.
+            </p>
+            <img src={emptyCartImg} alt="Empty cart" />
+            <Link to='/' className="button button--black">
+                <span>Вернуться назад</span>
+            </Link>
+        </div>}
+
+    </div>
   )
 }
