@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const getTotalPrice = arr => arr.reduce((sum, obj) => obj.price + sum, 0);
+const allItems = (state) => [].concat.apply([], Object.values(state.items).map(obj => obj.items))
 
 const cartSlice = createSlice({
     name: 'cart',
@@ -16,8 +17,8 @@ const cartSlice = createSlice({
                 : state.items[action.payload.id].items = [...state.items[action.payload.id].items, action.payload];
             state.items[action.payload.id].total = getTotalPrice(state.items[action.payload.id].items);
             state.items[action.payload.id].count = state.items[action.payload.id].items.length;
-            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
-            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
+            state.totalCount = allItems(state).length;
+            state.totalPrice = getTotalPrice(allItems(state));
         },
         clearCartItems: (state) => {
             if (window.confirm('Are you sure you want to clear the cart?')) {
@@ -30,16 +31,16 @@ const cartSlice = createSlice({
 
         deleteItem: (state, action) => {
             delete state.items[action.payload];
-            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
-            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
+            state.totalCount = allItems(state).length;
+            state.totalPrice = getTotalPrice(allItems(state));
         },
 
         itemPlus: (state, action) => {
             state.items[action.payload.id].items.push(action.payload);
             state.items[action.payload.id].total = getTotalPrice(state.items[action.payload.id].items);
             state.items[action.payload.id].count = state.items[action.payload.id].items.length;
-            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
-            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
+            state.totalCount = allItems(state).length;
+            state.totalPrice = getTotalPrice(allItems(state));
         },
 
         itemMinus: (state, action) => {
@@ -53,8 +54,8 @@ const cartSlice = createSlice({
             }
 
 
-            state.totalCount = [].concat.apply([], Object.values(state.items).map(obj => obj.items)).length;
-            state.totalPrice = getTotalPrice([].concat.apply([], Object.values(state.items).map(obj => obj.items)));
+            state.totalCount = allItems(state).length;
+            state.totalPrice = getTotalPrice(allItems(state));
         }
 
     }
