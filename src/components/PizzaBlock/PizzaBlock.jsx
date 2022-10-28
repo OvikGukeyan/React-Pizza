@@ -60,7 +60,7 @@ export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types=[], onAddPi
             </div>
             
             <div className="pizza-block__bottom">
-                <div className="pizza-block__price">от {price} ₽</div>
+                <div className="pizza-block__price">от {price} $</div>
                 <Button onClick={onClickAddPizza} className={"button--outline button--add"}>
                 <svg
                         width="12"

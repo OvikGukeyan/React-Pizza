@@ -65,7 +65,7 @@ export const Cart = () => {
           <div className="cart__bottom">
             <div className="cart__bottom-details">
               <span> Всего пицц: <b>{totalCount} шт.</b> </span>
-              <span> Сумма заказа: <b>{totalPrice} ₽</b> </span>
+              <span> Сумма заказа: <b>{totalPrice} $</b> </span>
             </div>
             <div className="cart__bottom-buttons">
               <a href="/" className="button button--outline button--add go-back-btn">
@@ -83,7 +83,7 @@ export const Cart = () => {
         </div>
         : 
         <div className="cart cart--empty">
-            <h2>Корзина пустая <icon>😕</icon></h2>
+            <h2>Корзина пустая <span>😕</span></h2>
             <p>
                 Вероятней всего, вы не заказывали ещё пиццу.<br />
                 Для того, чтобы заказать пиццу, перейди на главную страницу.

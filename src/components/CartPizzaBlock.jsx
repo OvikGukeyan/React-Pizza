@@ -45,7 +45,7 @@ export const CartPizzaBlock = ({id, name, size, type, total, count, price, image
                 </Button>
               </div>
               <div className="cart__item-price">
-                <b>{total} ₽</b>
+                <b>{total} $</b>
               </div>
               <div  className="cart__item-remove">
                 <Button onClick={handleDeleteIten} className="button button--outline button--circle">

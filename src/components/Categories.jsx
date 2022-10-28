@@ -1,13 +1,13 @@
-export const Categories = ({ items, helnleChoiceCategorie, category }) => {
+export const Categories = ({ items, handleChoiceCategorie, category }) => {
     return (
         <div className="categories">
 
             <ul>
-                <li className={category === null && 'active'} onClick={() => helnleChoiceCategorie(null)}>Все</li>
+                <li className={category === null ? 'active' : ''} onClick={() => handleChoiceCategorie(null)}>Все</li>
                 {items &&
                     items.map((item, index) => (
                         <li
-                            onClick={() => helnleChoiceCategorie(index)}
+                            onClick={() => handleChoiceCategorie(index)}
                             className={index === category ? 'active' : ''}
                             key={`${item}_${index}`}
                         >{item}</li>

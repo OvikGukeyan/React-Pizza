@@ -29,7 +29,7 @@ export const Home = () => {
         dispatch(setSortBy(type, order))
     }
 
-    const helnleChoiceCategorie = (index) => {
+    const handleChoiceCategorie = (index) => {
         dispatch(setCategory(index))
     }
 
@@ -44,12 +44,13 @@ export const Home = () => {
                 <Categories
                     items={categoryNames}
                     category={category}
+                    handleChoiceCategorie={handleChoiceCategorie}
                 />
                 <SortPopup
                     items={sortItems}
                     handleChoicePopup={handleChoicePopup}
                     sortBy={sortBy}
-                    helnleChoiceCategorie={helnleChoiceCategorie}
+                    
                 />
             </div>
             <h2 className="content__title">Все пиццы</h2>
