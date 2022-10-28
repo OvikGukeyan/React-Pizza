@@ -3,7 +3,7 @@ export const Categories = ({ items, handleChoiceCategorie, category }) => {
         <div className="categories">
 
             <ul>
-                <li className={category === null ? 'active' : ''} onClick={() => handleChoiceCategorie(null)}>Все</li>
+                <li className={category === null ? 'active' : ''} onClick={() => handleChoiceCategorie(null)}>All</li>
                 {items &&
                     items.map((item, index) => (
                         <li

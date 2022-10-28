@@ -4,7 +4,7 @@ import { Button } from "../Button";
 
 
 export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types=[], onAddPizza, addedCount }) => {
-    const allTypes = ["тонкое", "традиционное"];
+    const allTypes = ["thin", "traditional"];
     const allSizes = [26, 30, 40];
     const [activeType, setActiveType] = useState(types[0]);
     const [activeSize, setActiveSize] = useState(sizes[0]);
@@ -53,14 +53,14 @@ export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types=[], onAddPi
                         <li
                             key={`${size}_${index}`}
                             onClick={() => choiceSize(size)}
-                            className={`${!sizes.includes(size) ? 'disabled' : ''} ${activeSize === size ? 'active' : ''}`}>{size} см.
+                            className={`${!sizes.includes(size) ? 'disabled' : ''} ${activeSize === size ? 'active' : ''}`}>{size} sm.
                         </li>
                     ))}
                 </ul>
             </div>
             
             <div className="pizza-block__bottom">
-                <div className="pizza-block__price">от {price} $</div>
+                <div className="pizza-block__price">from {price} $</div>
                 <Button onClick={onClickAddPizza} className={"button--outline button--add"}>
                 <svg
                         width="12"
@@ -74,7 +74,7 @@ export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types=[], onAddPi
                             fill="white"
                         />
                     </svg>
-                    <span>Добавить</span>
+                    <span>Add</span>
                     {addedCount && <i>{addedCount}</i>}
                 </Button>
                 

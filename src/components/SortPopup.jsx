@@ -41,7 +41,7 @@ export const SortPopup = ({ items, handleChoicePopup, sortBy }) => {
                         fill="#2C2C2C"
                     />
                 </svg>
-                <b>Сортировка по:</b>
+                <b>Sort by:</b>
                 <span onClick={toggleVisiablePopup}>{items.find((item) => item.type === sortBy.type).name}</span>
             </div>
             {visiblePopup &&

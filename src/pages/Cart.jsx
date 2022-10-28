@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { CartPizzaBlock } from "../components/CartPizzaBlock";
+import { CartPizzaBlock, Button } from "../components";
 import { clearCartItems, deleteItem, itemMinus, itemPlus, selectCartItems, selectTotalCount, selectTotalPrice } from "../redux/slices/cartSlice";
 import emptyCartImg  from "../assets/img/empty-cart.png";
 import { Link } from "react-router-dom";
@@ -26,6 +26,10 @@ export const Cart = () => {
     dispatch(itemMinus(id))
   }
 
+  const onClickOrder = () => {
+    console.log(cartItems)
+  }
+
   const addedPizzas = Object.keys(cartItems).map(key => cartItems[key].items[0])
   return (
     <div className="container container--cart">
@@ -37,7 +41,7 @@ export const Cart = () => {
               <path d="M14.3333 16.3333C15.0697 16.3333 15.6667 15.7364 15.6667 15C15.6667 14.2636 15.0697 13.6667 14.3333 13.6667C13.597 13.6667 13 14.2636 13 15C13 15.7364 13.597 16.3333 14.3333 16.3333Z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M4.78002 4.99999H16.3334L15.2134 10.5933C15.1524 10.9003 14.9854 11.176 14.7417 11.3722C14.4979 11.5684 14.1929 11.6727 13.88 11.6667H6.83335C6.50781 11.6694 6.1925 11.553 5.94689 11.3393C5.70128 11.1256 5.54233 10.8295 5.50002 10.5067L4.48669 2.82666C4.44466 2.50615 4.28764 2.21182 4.04482 1.99844C3.80201 1.78505 3.48994 1.66715 3.16669 1.66666H1.66669" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-              Корзина</h2>
+              Cart</h2>
             <div className="cart__clear">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.5 5H4.16667H17.5" stroke="#B6B6B6" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -64,33 +68,33 @@ export const Cart = () => {
           </div>
           <div className="cart__bottom">
             <div className="cart__bottom-details">
-              <span> Всего пицц: <b>{totalCount} шт.</b> </span>
-              <span> Сумма заказа: <b>{totalPrice} $</b> </span>
+              <span> Total count: <b>{totalCount} pcs.</b> </span>
+              <span> Total price: <b>{totalPrice} $</b> </span>
             </div>
             <div className="cart__bottom-buttons">
-              <a href="/" className="button button--outline button--add go-back-btn">
+              <Link to="/" className="button button--outline button--add go-back-btn">
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M7 13L1 6.93015L6.86175 1" stroke="#D3D3D3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
 
-                <span>Вернуться назад</span>
-              </a>
-              <div className="button pay-btn">
-                <span>Оплатить сейчас</span>
-              </div>
+                <span>Back</span>
+              </Link>
+              <Button onClick={onClickOrder} className="button pay-btn">
+                <span>Pay now</span>
+              </Button>
             </div>
           </div>
         </div>
         : 
         <div className="cart cart--empty">
-            <h2>Корзина пустая <span>😕</span></h2>
+            <h2>Cart empty <span>😕</span></h2>
             <p>
-                Вероятней всего, вы не заказывали ещё пиццу.<br />
-                Для того, чтобы заказать пиццу, перейди на главную страницу.
+            You didn't choose pizza.<br />
+            To select return to the main page.
             </p>
             <img src={emptyCartImg} alt="Empty cart" />
             <Link to='/' className="button button--black">
-                <span>Вернуться назад</span>
+                <span>Back</span>
             </Link>
         </div>}
 

@@ -12,11 +12,11 @@ export const Home = () => {
     const category = useSelector(selectCategory);
     const sortBy = useSelector(selectSortBy);
     const pizzas = useSelector(selectPizzas);
-    const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
+    const categoryNames = ['Meat', 'Vegeterian', 'Grill', 'Spicy', 'Closed']
     const sortItems = [
-        { name: 'популярности', type: 'popular', order: 'desc' },
-        { name: 'цене', type: 'price', order: 'asc' },
-        { name: 'алфавиту', type: 'name', order: 'asc' }
+        { name: 'popular', type: 'popular', order: 'desc' },
+        { name: 'price', type: 'price', order: 'asc' },
+        { name: 'alphabet', type: 'name', order: 'asc' }
     ]
 
     const dispatch = useDispatch();
@@ -53,7 +53,7 @@ export const Home = () => {
                     
                 />
             </div>
-            <h2 className="content__title">Все пиццы</h2>
+            <h2 className="content__title">All pizzas</h2>
             <div className="content__items">
                 {isLoaded ? pizzas
                     // .filter((item) => item.category === category)
