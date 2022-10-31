@@ -1,7 +1,7 @@
 import { Categories, Loading, SortPopup } from '../components';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock'
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPizzas, fetchPizzas, selectIsLoaded } from '../redux/slices/pizzasSlice';
+import { selectPizzas, selectIsLoaded, fetchPizzas } from '../redux/slices/pizzasSlice';
 import { selectCategory, selectSortBy, setCategory, setSortBy } from '../redux/slices/filtersSlice';
 import { useEffect } from "react";
 import { selectCartItems, setCartItems } from '../redux/slices/cartSlice';
@@ -22,7 +22,8 @@ export const Home = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchPizzas(sortBy, category))
+        dispatch(fetchPizzas({sortBy, category}))
+
     }, [category, sortBy]);
 
     const handleChoicePopup = (type, order) => {

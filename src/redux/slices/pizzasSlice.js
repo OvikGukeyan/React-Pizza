@@ -1,32 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import  axios  from "axios";
 
-export const fetchPizzas = (sortBy, category) => (dispatch) => {
-    dispatch(setLoaded(false))
-    axios.get(`https://6350fa043e9fa1244e51f54d.mockapi.io/pizzas?sortBy=${sortBy.type}&order=${sortBy.order}&${category !== null ? `category=${category}` : ''}`)
-    .then(({data}) => {
-      dispatch(setPizzas(data))
-    })
-}
+export const fetchPizzas = createAsyncThunk('pizzas/fetchPizzass', async ({sortBy, category}) =>{
+    const resp = await axios.get(`https://635fcafd3e8f65f283bba8bc.mockapi.io/pizzas?sortBy=${sortBy.type}&order=${sortBy.order}&${category !== null ? `category=${category}` : ''}`)
+    return resp.data
+})
+
 
 const pizzasSlice = createSlice({
     name: 'pizzas',
     initialState: {
         items: [],
-        isLoaded: false
+        isLoaded: false,
+        loadingRejected: false
     },
-    reducers: {
-        setPizzas: (state, action) => {
+    
+    extraReducers: {
+        [fetchPizzas.pending]: (state) => {
+            state.isLoaded = false;
+            state.loadingRejected = false;
+        },
+        [fetchPizzas.fulfilled]: (state, action) => {
+            state.isLoaded = true; 
             state.items = action.payload;
-            state.isLoaded = true;
+        },
+        [fetchPizzas.rejected]: (state) => {
+            state.isLoaded = false;
+            state.loadingRejected = true;
         },
 
-        setLoaded: (state, action) => {
-            state.isLoaded = action.payload;
-        }
-
-        
-        
     }
 });
 
