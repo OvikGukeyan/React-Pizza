@@ -23,7 +23,7 @@ export const Home = () => {
 
     useEffect(() => {
         dispatch(fetchPizzas({sortBy, category}))
-
+        window.scrollTo(0, 0)
     }, [category, sortBy]);
 
     const handleChoicePopup = (type, order) => {
@@ -57,7 +57,6 @@ export const Home = () => {
             <h2 className="content__title">All pizzas</h2>
             <div className="content__items">
                 {isLoaded ? pizzas
-                    // .filter((item) => item.category === category)
                     .map((obj) => (
                         <PizzaBlock
                             onAddPizza={onAddPizza}
