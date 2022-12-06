@@ -6,7 +6,7 @@ import { selectCategory, selectSortBy, setCategory, setSortBy } from '../redux/s
 import { useEffect } from "react";
 import { selectCartItems, setCartItems } from '../redux/slices/cartSlice';
 
-export const Home = () => {
+export const Home = ({searchValue}) => {
     const cartItems = useSelector(selectCartItems);
     const isLoaded = useSelector(selectIsLoaded);
     const category = useSelector(selectCategory);
@@ -22,9 +22,9 @@ export const Home = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchPizzas({sortBy, category}))
+        dispatch(fetchPizzas({sortBy, category, searchValue}))
         window.scrollTo(0, 0)
-    }, [category, sortBy]);
+    }, [category, sortBy, searchValue]);
 
     const handleChoicePopup = (type, order) => {
         dispatch(setSortBy(type, order))
