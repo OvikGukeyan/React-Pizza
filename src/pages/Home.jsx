@@ -1,12 +1,14 @@
-import { Categories, Loading, SortPopup } from '../components';
+import { Categories, Loading, SortPopup, Pagination } from '../components';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPizzas, selectIsLoaded, fetchPizzas } from '../redux/slices/pizzasSlice';
 import { selectCategory, selectSortBy, setCategory, setSortBy } from '../redux/slices/filtersSlice';
-import { useEffect } from "react";
 import { selectCartItems, setCartItems } from '../redux/slices/cartSlice';
+import { useState, useEffect } from 'react';
 
-export const Home = ({searchValue}) => {
+
+export const Home = ({ searchValue }) => {
+    const [currentPage, setCurrentPage] = useState(1)
     const cartItems = useSelector(selectCartItems);
     const isLoaded = useSelector(selectIsLoaded);
     const category = useSelector(selectCategory);
@@ -22,9 +24,9 @@ export const Home = ({searchValue}) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchPizzas({sortBy, category, searchValue}))
+        dispatch(fetchPizzas({ sortBy, category, searchValue, currentPage }))
         window.scrollTo(0, 0)
-    }, [category, sortBy, searchValue]);
+    }, [category, sortBy, searchValue, currentPage]);
 
     const handleChoicePopup = (type, order) => {
         dispatch(setSortBy(type, order))
@@ -41,6 +43,7 @@ export const Home = ({searchValue}) => {
 
     return (
         <div className="container">
+
             <div className="content__top">
                 <Categories
                     items={categoryNames}
@@ -51,7 +54,7 @@ export const Home = ({searchValue}) => {
                     items={sortItems}
                     handleChoicePopup={handleChoicePopup}
                     sortBy={sortBy}
-                    
+
                 />
             </div>
             <h2 className="content__title">All pizzas</h2>
@@ -67,6 +70,8 @@ export const Home = ({searchValue}) => {
                     )) : [...Array(10)].map((_, index) => <Loading key={index} />)}
 
             </div>
+            <Pagination setCurrentPage={setCurrentPage} />
+
         </div>
     )
 }

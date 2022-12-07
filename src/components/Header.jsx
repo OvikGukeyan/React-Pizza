@@ -4,7 +4,7 @@ import logo from '../assets/img/pizza-logo.svg';
 import { selectTotalCount, selectTotalPrice } from '../redux/slices/cartSlice';
 import {Search, Button} from './index'
 
-export const Header = ({searchValue, setSearchValue}) => {
+export const Header = () => {
     const totalPrice = useSelector(selectTotalPrice)
     const totalCount = useSelector(selectTotalCount)
     return (
@@ -19,7 +19,7 @@ export const Header = ({searchValue, setSearchValue}) => {
                         </div>
                     </div>
                 </Link>
-                <Search searchValue={searchValue} setSearchValue={setSearchValue}/>
+                <Search />
 
                 <Link to='cart'>
                     <div className="header__cart">
