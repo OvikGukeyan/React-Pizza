@@ -1,14 +1,17 @@
-import { Categories, Loading, SortPopup, Pagination } from '../components';
-import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock'
+import { Categories, Loading, SortPopup, Pagination, PizzaBlock } from '../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPizzas, selectIsLoaded, fetchPizzas } from '../redux/slices/pizzasSlice';
-import { selectCategory, selectSortBy, setCategory, setSortBy } from '../redux/slices/filtersSlice';
+import { selectCategory, selectSortBy, setCategory, setSortBy, selectCurrentPage, setCurrentPage, setFilters } from '../redux/slices/filtersSlice';
 import { selectCartItems, setCartItems } from '../redux/slices/cartSlice';
-import { useState, useEffect } from 'react';
+import { useEffect, useContext, useRef } from 'react';
+import { searchContext } from '../App';
+import qs from 'qs';
+import { useNavigate } from 'react-router-dom';
 
 
-export const Home = ({ searchValue }) => {
-    const [currentPage, setCurrentPage] = useState(1)
+export const Home = () => {
+    const { searchValue } = useContext(searchContext);
+    const currentPage = useSelector(selectCurrentPage);
     const cartItems = useSelector(selectCartItems);
     const isLoaded = useSelector(selectIsLoaded);
     const category = useSelector(selectCategory);
@@ -20,13 +23,39 @@ export const Home = ({ searchValue }) => {
         { name: 'price', type: 'price', order: 'asc' },
         { name: 'alphabet', type: 'name', order: 'asc' }
     ]
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+    const isParam = useRef(false);
+    const isMounted = useRef(false);
 
+    //We check the presence of parameters in the url, if they are, write them to redux
     useEffect(() => {
-        dispatch(fetchPizzas({ sortBy, category, searchValue, currentPage }))
-        window.scrollTo(0, 0)
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1));
+            dispatch(setFilters(params))
+            isParam.current = true;
+        }
+    }, [])
+    //We check the absence of the parameters of the yurl, in case of absence we make a request for pizzas. If they are, the request will happen on the next render.Making the page scroll up.
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (!isParam.current) { dispatch(fetchPizzas({ sortBy, category, searchValue, currentPage })) };
+        isParam.current = false;
     }, [category, sortBy, searchValue, currentPage]);
+
+    //We check whether the url parameters were recorded, if yes, we write them in the address bar
+    useEffect(() => {
+        if (isMounted.current) {
+            const queryString = qs.stringify({
+                sortBy,
+                category,
+                currentPage
+            })
+            navigate(`?${queryString}`);
+        }
+
+        isMounted.current = true;
+    }, [category, sortBy, currentPage]);
 
     const handleChoicePopup = (type, order) => {
         dispatch(setSortBy(type, order))
@@ -38,6 +67,10 @@ export const Home = ({ searchValue }) => {
 
     const onAddPizza = (obj) => {
         dispatch(setCartItems(obj))
+    }
+
+    const onChangePage = (value) => {
+        dispatch(setCurrentPage(value))
     }
 
 
@@ -70,7 +103,7 @@ export const Home = ({ searchValue }) => {
                     )) : [...Array(10)].map((_, index) => <Loading key={index} />)}
 
             </div>
-            <Pagination setCurrentPage={setCurrentPage} />
+            <Pagination onChangePage={onChangePage} />
 
         </div>
     )

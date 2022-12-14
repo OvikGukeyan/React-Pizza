@@ -18,7 +18,7 @@ function App() {
           <Routes>
             <Route
               path=''
-              element={<Home searchValue={searchValue} />}
+              element={<Home />}
             />
             <Route
               path='cart'

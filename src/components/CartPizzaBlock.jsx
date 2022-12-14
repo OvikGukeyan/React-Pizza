@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { Button } from "./";
 
 export const CartPizzaBlock = ({id, name, size, type, total, count, price, imageUrl, onDeleteItem, onItemPlus, onItemMinus }) => {
   const handleDeleteIten = () => {
