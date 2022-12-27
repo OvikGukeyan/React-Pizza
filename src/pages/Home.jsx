@@ -1,6 +1,6 @@
 import { Categories, Loading, SortPopup, Pagination, PizzaBlock } from '../components';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPizzas, selectIsLoaded, fetchPizzas } from '../redux/slices/pizzasSlice';
+import { selectPizzas, selectIsLoaded, selectLoadingRejected, fetchPizzas } from '../redux/slices/pizzasSlice';
 import { selectCategory, selectSortBy, setCategory, setSortBy, selectCurrentPage, setCurrentPage, setFilters } from '../redux/slices/filtersSlice';
 import { selectCartItems, setCartItems } from '../redux/slices/cartSlice';
 import { useEffect, useContext, useRef } from 'react';
@@ -14,6 +14,7 @@ export const Home = () => {
     const currentPage = useSelector(selectCurrentPage);
     const cartItems = useSelector(selectCartItems);
     const isLoaded = useSelector(selectIsLoaded);
+    const loadingRejected = useSelector(selectLoadingRejected)
     const category = useSelector(selectCategory);
     const sortBy = useSelector(selectSortBy);
     const pizzas = useSelector(selectPizzas);
@@ -91,7 +92,11 @@ export const Home = () => {
                 />
             </div>
             <h2 className="content__title">All pizzas</h2>
-            <div className="content__items">
+            {loadingRejected ? (
+                <div className='content__rejected'>
+                    <h1>Something went wrong. Please try again later.😕</h1>
+                </div>
+            ) : (<div className="content__items">
                 {isLoaded ? pizzas
                     .map((obj) => (
                         <PizzaBlock
@@ -102,7 +107,8 @@ export const Home = () => {
                         />
                     )) : [...Array(10)].map((_, index) => <Loading key={index} />)}
 
-            </div>
+            </div>)}
+
             <Pagination onChangePage={onChangePage} />
 
         </div>

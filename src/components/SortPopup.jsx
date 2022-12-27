@@ -11,7 +11,8 @@ export const SortPopup = ({ items, handleChoicePopup, sortBy }) => {
     }
 
     useEffect(() => {
-        document.body.addEventListener('click', handleOutsideClick)
+        document.body.addEventListener('click', handleOutsideClick);
+        return () => document.body.removeEventListener('click', handleOutsideClick)
     }, [])
 
 
