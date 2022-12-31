@@ -1,9 +1,9 @@
+import React, { useState, createContext } from 'react';
 import { Header } from './components';
 import { Home, Cart } from './pages'
 import { Routes, Route } from "react-router-dom";
-import { useState, createContext } from 'react';
 
-export const searchContext = createContext('')
+export const searchContext = createContext<any>('');
 
 
 function App() {
