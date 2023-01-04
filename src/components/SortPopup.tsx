@@ -1,11 +1,17 @@
-import { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react";
 
-export const SortPopup = ({ items, handleChoicePopup, sortBy }) => {
+type SortPopupProps = {
+    items: {name: string; type: string; order: string}[];
+    handleChoicePopup: any;
+    sortBy: {type: string; order: string;}
+}
+
+export const SortPopup: React.FC<SortPopupProps> = ({ items, handleChoicePopup, sortBy }) => {
     
     const [visiblePopup, setVisiblePopup] = useState(false);
-    const sortRef = useRef();
+    const sortRef = useRef<HTMLDivElement>(null);
 
-    const handleOutsideClick = (e) => {
+    const handleOutsideClick = (e: any) => {
         !e.path.includes(sortRef.current) && setVisiblePopup(false)
 
     }
@@ -20,9 +26,9 @@ export const SortPopup = ({ items, handleChoicePopup, sortBy }) => {
         setVisiblePopup(!visiblePopup);
     };
 
-    const choicePopup = ({type, order}) => {
+    const choicePopup = (obj: {name: string; type: string; order: string}) => {
         setVisiblePopup(false);
-        handleChoicePopup({type, order})
+        handleChoicePopup(obj)
     }
 
 
@@ -43,7 +49,7 @@ export const SortPopup = ({ items, handleChoicePopup, sortBy }) => {
                     />
                 </svg>
                 <b>Sort by:</b>
-                <span onClick={toggleVisiablePopup}>{items.find((item) => item.type === sortBy.type).name}</span>
+                <span onClick={toggleVisiablePopup}>{ items.find((item) => item.type === sortBy.type)?.name }</span>
             </div>
             {visiblePopup &&
                 <div className="sort__popup">

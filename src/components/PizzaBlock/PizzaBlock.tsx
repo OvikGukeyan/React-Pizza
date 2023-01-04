@@ -1,18 +1,27 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
 import { Button } from "../Button";
 
+type PizzaBlockProps = {
+    name: string;
+    id: number;
+    imageUrl: string;
+    price: number;
+    sizes: number[];
+    types: number[]; 
+    onAddPizza: any;
+    addedCount: any;
+}
 
-export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types = [], onAddPizza, addedCount }) => {
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({ name, id, imageUrl, price, sizes, types = [], onAddPizza, addedCount }) => {
     const allTypes = ["thin", "traditional"];
     const allSizes = [26, 30, 40];
     const [activeType, setActiveType] = useState(types[0]);
     const [activeSize, setActiveSize] = useState(sizes[0]);
-    const choiceSize = (size) => {
+    const choiceSize = (size: number) => {
         setActiveSize(size)
     }
 
-    const choiceType = (index) => {
+    const choiceType = (index: number) => {
         setActiveType(index)
     }
 
@@ -84,13 +93,3 @@ export const PizzaBlock = ({ name, id, imageUrl, price, sizes, types = [], onAdd
     )
 }
 
-PizzaBlock.prototype = {
-    name: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    sizes: PropTypes.arrayOf([PropTypes.number.isRequired]).isRequired,
-    types: PropTypes.arrayOf([PropTypes.number.isRequired]).isRequired,
-    onAddPizza: PropTypes.func.isRequired,
-    addedCount: PropTypes.number.isRequired
-}

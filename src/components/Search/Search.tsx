@@ -1,31 +1,31 @@
-import { useContext, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { searchContext } from '../../App';
 import styles from "./Search.module.scss";
 import debounce from 'lodash.debounce';
 import { useCallback } from 'react';
 import { useState } from 'react';
 
-export function Search() {
+export const Search: React.FC = () => {
 
     const [localSearchValue, setLocalSearchValue] = useState('');
     const { setSearchValue } = useContext(searchContext);
-    const inputRef = useRef();
+    const inputRef = useRef<HTMLInputElement>(null);
 
 
     const onClear = () => {
         setSearchValue('');
         setLocalSearchValue('');
-        inputRef.current.focus();
+        inputRef.current?.focus();
     }
 
     const updateInputeValue = useCallback(
-        debounce((value) => {
+        debounce((value: string) => {
             setSearchValue(value);
         }, 1000),
         []
     )
 
-    const onInputChange = (value) => {
+    const onInputChange = (value: string) => {
         setLocalSearchValue(value);
         updateInputeValue(value);
 

@@ -1,9 +1,9 @@
+import React, { useEffect, useContext, useRef } from 'react';
 import { Categories, Loading, SortPopup, Pagination, PizzaBlock } from '../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPizzas, selectIsLoaded, selectLoadingRejected, fetchPizzas } from '../redux/slices/pizzasSlice';
 import { selectCategory, selectSortBy, setCategory, setSortBy, selectCurrentPage, setCurrentPage, setFilters } from '../redux/slices/filtersSlice';
 import { selectCartItems, setCartItems } from '../redux/slices/cartSlice';
-import { useEffect, useContext, useRef } from 'react';
 import { searchContext } from '../App';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +18,9 @@ export const Home = () => {
     const category = useSelector(selectCategory);
     const sortBy = useSelector(selectSortBy);
     const pizzas = useSelector(selectPizzas);
-    const categoryNames = ['Meat', 'Vegeterian', 'Grill', 'Spicy', 'Closed']
-    const sortItems = [
+    const categoryNames: string[] = ['Meat', 'Vegeterian', 'Grill', 'Spicy', 'Closed'];
+    type SortItemsTypes = {name: string; type: string; order: string};
+    const sortItems: SortItemsTypes[] = [
         { name: 'popular', type: 'popular', order: 'desc' },
         { name: 'price', type: 'price', order: 'asc' },
         { name: 'alphabet', type: 'name', order: 'asc' }
@@ -38,6 +39,7 @@ export const Home = () => {
         }
     }, [])
     //We check the absence of the parameters of the yurl, in case of absence we make a request for pizzas. If they are, the request will happen on the next render.Making the page scroll up.
+    
     useEffect(() => {
         window.scrollTo(0, 0);
         if (!isParam.current) { dispatch(fetchPizzas({ sortBy, category, searchValue, currentPage })) };
@@ -58,11 +60,11 @@ export const Home = () => {
         isMounted.current = true;
     }, [category, sortBy, currentPage]);
 
-    const handleChoicePopup = (type, order) => {
-        dispatch(setSortBy(type, order))
+    const handleChoicePopup = (obj: SortItemsTypes) => {
+        dispatch(setSortBy(obj))
     }
 
-    const handleChoiceCategorie = (index) => {
+    const handleChoiceCategorie = (index: number) => {
         dispatch(setCategory(index))
     }
 
@@ -70,7 +72,7 @@ export const Home = () => {
         dispatch(setCartItems(obj))
     }
 
-    const onChangePage = (value) => {
+    const onChangePage = (value: number) => {
         dispatch(setCurrentPage(value))
     }
 

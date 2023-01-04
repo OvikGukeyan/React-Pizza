@@ -1,6 +1,21 @@
-import { Button } from "./";
+import React from "react";
+import { Button } from ".";
 
-export const CartPizzaBlock = ({id, name, size, type, total, count, price, imageUrl, onDeleteItem, onItemPlus, onItemMinus }) => {
+type CartPizzaBlockProps = {
+  id: number;
+  name: string;
+  size: number[];
+  type: number[];
+  total: number;
+  count: number;
+  price: number;
+  imageUrl: string; 
+  onDeleteItem: any;
+  onItemPlus: any; 
+  onItemMinus: any;
+}
+
+export const CartPizzaBlock: React.FC<CartPizzaBlockProps> = ({id, name, size, type, total, count, price, imageUrl, onDeleteItem, onItemPlus, onItemMinus }) => {
   const handleDeleteIten = () => {
     onDeleteItem(id)
   }

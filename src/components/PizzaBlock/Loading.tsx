@@ -1,7 +1,8 @@
+import React from "react";
 import ContentLoader from "react-content-loader";
 
 
-export const Loading = () => {
+export const Loading: React.FC = () => {
   return (
     <ContentLoader 
     className="pizza-block"

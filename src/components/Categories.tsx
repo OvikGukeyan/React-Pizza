@@ -1,4 +1,12 @@
-export const Categories = ({ items, handleChoiceCategorie, category }) => {
+import React from "react";
+
+type CategoriesProps = {
+    items: string[];
+    handleChoiceCategorie: any;
+    category: number;
+}
+
+export const Categories: React.FC<CategoriesProps> = ({ items, handleChoiceCategorie, category }) => {
     return (
         <div className="categories">
 

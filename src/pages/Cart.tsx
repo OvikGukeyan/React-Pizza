@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { CartPizzaBlock, Button } from "../components";
 import { clearCartItems, deleteItem, itemMinus, itemPlus, selectCartItems, selectTotalCount, selectTotalPrice } from "../redux/slices/cartSlice";
@@ -14,15 +15,15 @@ export const Cart = () => {
     dispatch(clearCartItems())
   }
 
-  const onDeleteItem = (id) => {
+  const onDeleteItem = (id: number) => {
     dispatch(deleteItem(id))
   }
 
-  const onItemPlus = (obj) => {
+  const onItemPlus = (obj: any) => {
     dispatch(itemPlus(obj))
   }
 
-  const onItemMinus = (id) => {
+  const onItemMinus = (id: number) => {
     dispatch(itemMinus(id))
   }
 

@@ -1,10 +1,11 @@
+import  React  from "react";
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/pizza-logo.svg';
 import { selectTotalCount, selectTotalPrice } from '../redux/slices/cartSlice';
 import {Search, Button} from './index'
 
-export const Header = () => {
+export const Header: React.FC = () => {
     const totalPrice = useSelector(selectTotalPrice)
     const totalCount = useSelector(selectTotalCount)
     return (
