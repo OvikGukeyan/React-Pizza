@@ -1,12 +1,13 @@
 import React, { useEffect, useContext, useRef } from 'react';
 import { Categories, Loading, SortPopup, Pagination, PizzaBlock } from '../components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectPizzas, selectIsLoaded, selectLoadingRejected, fetchPizzas } from '../redux/slices/pizzasSlice';
-import { selectCategory, selectSortBy, setCategory, setSortBy, selectCurrentPage, setCurrentPage, setFilters } from '../redux/slices/filtersSlice';
-import { selectCartItems, setCartItems } from '../redux/slices/cartSlice';
+import { selectCategory, selectSortBy, setCategory, setSortBy, selectCurrentPage, setCurrentPage, setFilters, SortBy, FilterSliceState } from '../redux/slices/filtersSlice';
+import { CartItem, selectCartItems, setCartItems } from '../redux/slices/cartSlice';
 import { searchContext } from '../App';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../redux/store';
 
 
 export const Home = () => {
@@ -21,19 +22,23 @@ export const Home = () => {
     const categoryNames: string[] = ['Meat', 'Vegeterian', 'Grill', 'Spicy', 'Closed'];
     type SortItemsTypes = {name: string; type: string; order: string};
     const sortItems: SortItemsTypes[] = [
-        { name: 'popular', type: 'popular', order: 'desc' },
-        { name: 'price', type: 'price', order: 'asc' },
-        { name: 'alphabet', type: 'name', order: 'asc' }
+        { name: 'popular', type: 'rating', order: 'desc' },
+        { name: '-popular', type: 'rating', order: 'asc' },
+        { name: 'price', type: 'price', order: 'desc' },
+        { name: '-price', type: 'price', order: 'asc' },
+        { name: 'alphabet', type: 'name', order: 'asc' },
+        { name: '-alphabet', type: 'name', order: 'desc' },
+
     ]
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const isParam = useRef(false);
     const isMounted = useRef(false);
 
     //We check the presence of parameters in the url, if they are, write them to redux
     useEffect(() => {
         if (window.location.search) {
-            const params = qs.parse(window.location.search.substring(1));
+            const params = qs.parse(window.location.search.substring(1)) as unknown as FilterSliceState;
             dispatch(setFilters(params))
             isParam.current = true;
         }
@@ -60,15 +65,15 @@ export const Home = () => {
         isMounted.current = true;
     }, [category, sortBy, currentPage]);
 
-    const handleChoicePopup = (obj: SortItemsTypes) => {
+    const handleChoicePopup = (obj: SortBy) => {
         dispatch(setSortBy(obj))
     }
 
-    const handleChoiceCategorie = (index: number) => {
+    const handleChoiceCategorie = (index: number | null) => {
         dispatch(setCategory(index))
     }
 
-    const onAddPizza = (obj) => {
+    const onAddPizza = (obj: CartItem) => {
         dispatch(setCartItems(obj))
     }
 

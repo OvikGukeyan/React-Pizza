@@ -2,8 +2,8 @@ import React from "react";
 
 type CategoriesProps = {
     items: string[];
-    handleChoiceCategorie: any;
-    category: number;
+    handleChoiceCategorie: (index: number | null) => void;
+    category: number | null;
 }
 
 export const Categories: React.FC<CategoriesProps> = ({ items, handleChoiceCategorie, category }) => {

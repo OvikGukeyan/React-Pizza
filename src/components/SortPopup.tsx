@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
+import { SortBy } from "../redux/slices/filtersSlice";
 
 type SortPopupProps = {
-    items: {name: string; type: string; order: string}[];
-    handleChoicePopup: any;
-    sortBy: {type: string; order: string;}
+    items: SortBy[];
+    handleChoicePopup: (obj: SortBy) => void;
+    sortBy: SortBy;
 }
 
 export const SortPopup: React.FC<SortPopupProps> = ({ items, handleChoicePopup, sortBy }) => {
@@ -11,10 +12,15 @@ export const SortPopup: React.FC<SortPopupProps> = ({ items, handleChoicePopup, 
     const [visiblePopup, setVisiblePopup] = useState(false);
     const sortRef = useRef<HTMLDivElement>(null);
 
-    const handleOutsideClick = (e: any) => {
-        !e.path.includes(sortRef.current) && setVisiblePopup(false)
-
-    }
+    const handleOutsideClick = (e: MouseEvent) => {
+        const _e = e as MouseEvent & {
+            path: Node[];
+        };
+        if(sortRef.current) {
+            !_e.path.includes(sortRef.current) && setVisiblePopup(false)
+        }
+        
+    };
 
     useEffect(() => {
         document.body.addEventListener('click', handleOutsideClick);
@@ -26,7 +32,7 @@ export const SortPopup: React.FC<SortPopupProps> = ({ items, handleChoicePopup, 
         setVisiblePopup(!visiblePopup);
     };
 
-    const choicePopup = (obj: {name: string; type: string; order: string}) => {
+    const choicePopup = (obj: SortBy) => {
         setVisiblePopup(false);
         handleChoicePopup(obj)
     }
@@ -49,7 +55,7 @@ export const SortPopup: React.FC<SortPopupProps> = ({ items, handleChoicePopup, 
                     />
                 </svg>
                 <b>Sort by:</b>
-                <span onClick={toggleVisiablePopup}>{ items.find((item) => item.type === sortBy.type)?.name }</span>
+                <span onClick={toggleVisiablePopup}>{ items.find((item) => item.name === sortBy.name)?.name }</span>
             </div>
             {visiblePopup &&
                 <div className="sort__popup">
@@ -57,7 +63,7 @@ export const SortPopup: React.FC<SortPopupProps> = ({ items, handleChoicePopup, 
                         {items.map((obj, index) => (
                             <li
                                 onClick={() => choicePopup(obj)}
-                                key={`${obj.name}_${index}`} className={obj.type === sortBy.type ? 'active' : ''}
+                                key={`${obj.name}_${index}`} className={obj.name === sortBy.name ? 'active' : ''}
                             >{obj.name}</li>
                         ))}
 

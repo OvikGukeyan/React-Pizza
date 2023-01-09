@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CartItem } from "../../redux/slices/cartSlice";
 import { Button } from "../Button";
 
 type PizzaBlockProps = {
@@ -8,11 +9,11 @@ type PizzaBlockProps = {
     price: number;
     sizes: number[];
     types: number[]; 
-    onAddPizza: any;
-    addedCount: any;
+    onAddPizza: (obj: CartItem) => void;
+    addedCount: number;
 }
 
-export const PizzaBlock: React.FC<PizzaBlockProps> = ({ name, id, imageUrl, price, sizes, types = [], onAddPizza, addedCount }) => {
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({ name, id, imageUrl, price, sizes, types, onAddPizza, addedCount }) => {
     const allTypes = ["thin", "traditional"];
     const allSizes = [26, 30, 40];
     const [activeType, setActiveType] = useState(types[0]);

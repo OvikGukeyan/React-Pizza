@@ -1,18 +1,19 @@
 import React from "react";
 import { Button } from ".";
+import { CartItem } from "../redux/slices/cartSlice";
 
 type CartPizzaBlockProps = {
   id: number;
   name: string;
-  size: number[];
-  type: number[];
+  size: number;
+  type: string;
   total: number;
   count: number;
   price: number;
   imageUrl: string; 
-  onDeleteItem: any;
-  onItemPlus: any; 
-  onItemMinus: any;
+  onDeleteItem: (id: number) => void;
+  onItemPlus: (obj: CartItem) => void; 
+  onItemMinus: (id: number) => void;
 }
 
 export const CartPizzaBlock: React.FC<CartPizzaBlockProps> = ({id, name, size, type, total, count, price, imageUrl, onDeleteItem, onItemPlus, onItemMinus }) => {

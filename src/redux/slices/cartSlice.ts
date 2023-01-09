@@ -1,19 +1,43 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-const getTotalPrice = arr => arr.reduce((sum, obj) => obj.price + sum, 0);
-const allItems = (state) => [].concat.apply([], Object.values(state.items).map(obj => obj.items))
+const getTotalPrice = (arr: CartItem[]) => arr.reduce((sum, obj) => obj.price + sum, 0);
+// const allItems = (state: CartSliceState) => [].concat.apply([], Object.values(state.items).map(obj => obj.items));
+const allItems = (state: CartSliceState) => Object.values(state.items).map(obj => obj.items).flatMap(item => item);
+
+
+export type CartItem = {
+    id: number;
+    name: string;
+    imageUrl: string;
+    price: number;
+    size: number;
+    type: string; 
+}
+
+export type Items = {
+    [key: number]: {items: CartItem[], total: number, count: number}
+}
+
+interface CartSliceState {
+    items: Items ;
+    totalPrice: number;
+    totalCount: number;
+}
+
+const initialState: CartSliceState = {
+    items: {},
+    totalPrice: 0,
+    totalCount: 0,
+};
 
 const cartSlice = createSlice({
     name: 'cart',
-    initialState: {
-        items: {},
-        totalPrice: 0,
-        totalCount: 0,
-    },
+    initialState,
     reducers: {
-        setCartItems: (state, action) => {
+        setCartItems: (state, action: PayloadAction<CartItem>) => {
             !state.items[action.payload.id] ?
-                state.items[action.payload.id] = { items: [action.payload] }
+                state.items[action.payload.id] = { items: [action.payload], total: 0, count: 0 }
                 : state.items[action.payload.id].items = [...state.items[action.payload.id].items, action.payload];
             state.items[action.payload.id].total = getTotalPrice(state.items[action.payload.id].items);
             state.items[action.payload.id].count = state.items[action.payload.id].items.length;
@@ -29,13 +53,13 @@ const cartSlice = createSlice({
 
         },
 
-        deleteItem: (state, action) => {
+        deleteItem: (state, action: PayloadAction<number>) => {
             delete state.items[action.payload];
             state.totalCount = allItems(state).length;
             state.totalPrice = getTotalPrice(allItems(state));
         },
 
-        itemPlus: (state, action) => {
+        itemPlus: (state, action: PayloadAction<CartItem>) => {
             state.items[action.payload.id].items.push(action.payload);
             state.items[action.payload.id].total = getTotalPrice(state.items[action.payload.id].items);
             state.items[action.payload.id].count = state.items[action.payload.id].items.length;
@@ -43,7 +67,7 @@ const cartSlice = createSlice({
             state.totalPrice = getTotalPrice(allItems(state));
         },
 
-        itemMinus: (state, action) => {
+        itemMinus: (state, action: PayloadAction<number>) => {
             if (state.items[action.payload].items.length > 1) {
                 state.items[action.payload].items.splice(0, 1)
                 state.items[action.payload].total = getTotalPrice(state.items[action.payload].items);
@@ -61,8 +85,8 @@ const cartSlice = createSlice({
     }
 });
 
-export const selectTotalPrice = (state) => state.cart.totalPrice;
-export const selectTotalCount = (state) => state.cart.totalCount;
-export const selectCartItems = (state) => state.cart.items;
+export const selectTotalPrice = (state: RootState) => state.cart.totalPrice;
+export const selectTotalCount = (state: RootState) => state.cart.totalCount;
+export const selectCartItems = (state: RootState) => state.cart.items;
 export const { setCartItems, clearCartItems, deleteItem, itemPlus, itemMinus } = cartSlice.actions;
 export default cartSlice.reducer;

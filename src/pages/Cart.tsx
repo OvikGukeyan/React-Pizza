@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { CartPizzaBlock, Button } from "../components";
-import { clearCartItems, deleteItem, itemMinus, itemPlus, selectCartItems, selectTotalCount, selectTotalPrice } from "../redux/slices/cartSlice";
+import { CartItem, clearCartItems, deleteItem, itemMinus, itemPlus, selectCartItems, selectTotalCount, selectTotalPrice } from "../redux/slices/cartSlice";
 import emptyCartImg  from "../assets/img/empty-cart.png";
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export const Cart = () => {
     dispatch(deleteItem(id))
   }
 
-  const onItemPlus = (obj: any) => {
+  const onItemPlus = (obj: CartItem) => {
     dispatch(itemPlus(obj))
   }
 
@@ -31,7 +31,9 @@ export const Cart = () => {
     console.log(cartItems)
   }
 
-  const addedPizzas = Object.keys(cartItems).map(key => cartItems[key].items[0])
+  const addedPizzas = Object.keys(cartItems).map((key) => 
+    cartItems[Number(key)].items[0]);
+
   return (
     <div className="container container--cart">
       {totalCount ?
@@ -61,7 +63,6 @@ export const Cart = () => {
                 key={obj.id}
                 total={cartItems[obj.id].total}
                 count={cartItems[obj.id].count}
-                clearCart={clearCart}
                 onDeleteItem={onDeleteItem}
                 onItemPlus={onItemPlus}
                 onItemMinus={onItemMinus}
