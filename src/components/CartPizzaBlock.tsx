@@ -41,7 +41,7 @@ export const CartPizzaBlock: React.FC<CartPizzaBlockProps> = ({id, name, size, t
               </div>
               <div className="cart__item-info">
                 <h3>{name}</h3>
-                <p>{type} тесто, {size} см.</p>
+                <p>{type} , {size} sm.</p>
               </div>
               <div className="cart__item-count">
                 <Button onClick={handleMinusIten} className="button button--outline button--circle cart__item-count-minus">

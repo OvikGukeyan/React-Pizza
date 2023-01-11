@@ -8,9 +8,10 @@ export type SortBy = {
 }
 
 export interface FilterSliceState {
-    category: number | null,
-    sortBy: SortBy
-    currentPage: number
+    category: number | null;
+    sortBy: SortBy;
+    currentPage: number;
+    searchValue: string;
 }
 
 const initialState: FilterSliceState = {
@@ -20,7 +21,8 @@ const initialState: FilterSliceState = {
         type: 'popular',
         order: 'desc'
     },
-    currentPage: 1
+    currentPage: 1,
+    searchValue: ''
 }
 
 const filtersSlice = createSlice({
@@ -36,6 +38,9 @@ const filtersSlice = createSlice({
         setCurrentPage: (state, action: PayloadAction<number>) => {
             state.currentPage = action.payload
         },
+        setSearchValue: (state, action: PayloadAction<string>) => {
+            state.searchValue = action.payload
+        },
         setFilters: (state, action: PayloadAction<FilterSliceState>) => {
             state.sortBy.type = String(action.payload.sortBy.type);
             state.sortBy.order = String(action.payload.sortBy.order);
@@ -46,8 +51,7 @@ const filtersSlice = createSlice({
     }
 });
 
-export const selectCategory = (state: RootState) => state.filters.category;
-export const selectSortBy = (state: RootState) => state.filters.sortBy;
-export const selectCurrentPage = (state: RootState) => state.filters.currentPage;
-export const { setSortBy, setCategory, setCurrentPage, setFilters } = filtersSlice.actions;
+export const selectFilters = (state: RootState) => state.filters;
+
+export const { setSortBy, setCategory, setCurrentPage, setFilters, setSearchValue } = filtersSlice.actions;
 export default filtersSlice.reducer;

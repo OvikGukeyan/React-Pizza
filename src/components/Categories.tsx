@@ -1,12 +1,15 @@
 import React from "react";
 
 type CategoriesProps = {
-    items: string[];
     handleChoiceCategorie: (index: number | null) => void;
     category: number | null;
 }
 
-export const Categories: React.FC<CategoriesProps> = ({ items, handleChoiceCategorie, category }) => {
+export const Categories: React.FC<CategoriesProps> = React.memo(({ handleChoiceCategorie, category }) => {
+    
+    const items: string[] = ['Meat', 'Vegeterian', 'Grill', 'Spicy', 'Closed'];
+
+
     return (
         <div className="categories">
 
@@ -23,4 +26,4 @@ export const Categories: React.FC<CategoriesProps> = ({ items, handleChoiceCateg
             </ul>
         </div>
     )
-}
+})

@@ -1,14 +1,15 @@
-import React, { useContext, useRef } from 'react';
-import { searchContext } from '../../App';
+import React, { useRef } from 'react';
 import styles from "./Search.module.scss";
 import debounce from 'lodash.debounce';
 import { useCallback } from 'react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filtersSlice';
 
-export const Search: React.FC = () => {
 
+export const Search: React.FC = React.memo(() => {
+    const dispatch = useDispatch();
     const [localSearchValue, setLocalSearchValue] = useState('');
-    const { setSearchValue } = useContext(searchContext);
     const inputRef = useRef<HTMLInputElement>(null);
 
 
@@ -20,7 +21,7 @@ export const Search: React.FC = () => {
 
     const updateInputeValue = useCallback(
         debounce((value: string) => {
-            setSearchValue(value);
+            dispatch(setSearchValue(value));
         }, 1000),
         []
     )
@@ -41,4 +42,4 @@ export const Search: React.FC = () => {
             </div>
         </div>
     )
-}
+})

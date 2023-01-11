@@ -1,15 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { CartPizzaBlock, Button } from "../components";
-import { CartItem, clearCartItems, deleteItem, itemMinus, itemPlus, selectCartItems, selectTotalCount, selectTotalPrice } from "../redux/slices/cartSlice";
+import { CartItem, clearCartItems, deleteItem, itemMinus, itemPlus, selectCart } from "../redux/slices/cartSlice";
 import emptyCartImg  from "../assets/img/empty-cart.png";
 import { Link } from "react-router-dom";
 
 export const Cart = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector(selectCartItems);
-  const totalPrice = useSelector(selectTotalPrice);
-  const totalCount = useSelector(selectTotalCount);
+  const {cartItems, totalPrice, totalCount} = useSelector(selectCart);
+  
 
   const clearCart = () => {
     dispatch(clearCartItems())

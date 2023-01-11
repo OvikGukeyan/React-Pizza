@@ -1,35 +1,23 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Categories, Loading, SortPopup, Pagination, PizzaBlock } from '../components';
 import { useSelector } from 'react-redux';
-import { selectPizzas, selectIsLoaded, selectLoadingRejected, fetchPizzas } from '../redux/slices/pizzasSlice';
-import { selectCategory, selectSortBy, setCategory, setSortBy, selectCurrentPage, setCurrentPage, setFilters, SortBy, FilterSliceState } from '../redux/slices/filtersSlice';
-import { CartItem, selectCartItems, setCartItems } from '../redux/slices/cartSlice';
-import { searchContext } from '../App';
+import { selectPizzas, fetchPizzas } from '../redux/slices/pizzasSlice';
+import { setCategory, setSortBy, setCurrentPage, setFilters, SortBy, FilterSliceState, selectFilters } from '../redux/slices/filtersSlice';
+import { CartItem, selectCart, setCartItems } from '../redux/slices/cartSlice';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 
 
 export const Home = () => {
-    const { searchValue } = useContext(searchContext);
-    const currentPage = useSelector(selectCurrentPage);
-    const cartItems = useSelector(selectCartItems);
-    const isLoaded = useSelector(selectIsLoaded);
-    const loadingRejected = useSelector(selectLoadingRejected)
-    const category = useSelector(selectCategory);
-    const sortBy = useSelector(selectSortBy);
-    const pizzas = useSelector(selectPizzas);
-    const categoryNames: string[] = ['Meat', 'Vegeterian', 'Grill', 'Spicy', 'Closed'];
-    type SortItemsTypes = {name: string; type: string; order: string};
-    const sortItems: SortItemsTypes[] = [
-        { name: 'popular', type: 'rating', order: 'desc' },
-        { name: '-popular', type: 'rating', order: 'asc' },
-        { name: 'price', type: 'price', order: 'desc' },
-        { name: '-price', type: 'price', order: 'asc' },
-        { name: 'alphabet', type: 'name', order: 'asc' },
-        { name: '-alphabet', type: 'name', order: 'desc' },
 
-    ]
+    const {sortBy, category, searchValue, currentPage} = useSelector(selectFilters);
+    
+    const {cartItems} = useSelector(selectCart);
+
+    const {isLoaded, loadingRejected, pizzaItems} = useSelector(selectPizzas)
+    
+    
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const isParam = useRef(false);
@@ -65,21 +53,21 @@ export const Home = () => {
         isMounted.current = true;
     }, [category, sortBy, currentPage]);
 
-    const handleChoicePopup = (obj: SortBy) => {
+    const handleChoicePopup = useCallback((obj: SortBy) => {
         dispatch(setSortBy(obj))
-    }
+    }, [])
 
-    const handleChoiceCategorie = (index: number | null) => {
+    const handleChoiceCategorie = useCallback((index: number | null) => {
         dispatch(setCategory(index))
-    }
+    }, [])
 
     const onAddPizza = (obj: CartItem) => {
         dispatch(setCartItems(obj))
     }
 
-    const onChangePage = (value: number) => {
+    const onChangePage = useCallback((value: number) => {
         dispatch(setCurrentPage(value))
-    }
+    }, [])
 
 
     return (
@@ -87,12 +75,10 @@ export const Home = () => {
 
             <div className="content__top">
                 <Categories
-                    items={categoryNames}
                     category={category}
                     handleChoiceCategorie={handleChoiceCategorie}
                 />
                 <SortPopup
-                    items={sortItems}
                     handleChoicePopup={handleChoicePopup}
                     sortBy={sortBy}
 
@@ -104,7 +90,7 @@ export const Home = () => {
                     <h1>Something went wrong. Please try again later.😕</h1>
                 </div>
             ) : (<div className="content__items">
-                {isLoaded ? pizzas
+                {isLoaded ? pizzaItems
                     .map((obj) => (
                         <PizzaBlock
                             onAddPizza={onAddPizza}

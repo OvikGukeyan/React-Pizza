@@ -27,13 +27,13 @@ export type PizzaItem = {
 }
 
 interface PizzaSliceState {
-    items: PizzaItem[];
+    pizzaItems: PizzaItem[];
     isLoaded: boolean;
     loadingRejected: boolean;
 }
 
 const initialState: PizzaSliceState = {
-    items: [],
+    pizzaItems: [],
     isLoaded: false,
     loadingRejected: false,
 }
@@ -43,23 +43,23 @@ const pizzasSlice = createSlice({
     initialState,
     reducers: {
         setItems (state, action: PayloadAction<PizzaItem[]>) {
-            state.items = action.payload
+            state.pizzaItems = action.payload
         }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchPizzas.pending, (state) => {
-            state.items = [];
+            state.pizzaItems = [];
             state.isLoaded = false;
             state.loadingRejected = false;
         });
 
         builder.addCase(fetchPizzas.fulfilled, (state, action) => {
             state.isLoaded = true;
-            state.items = action.payload;
+            state.pizzaItems = action.payload;
         });
 
         builder.addCase(fetchPizzas.rejected, (state) => {
-            state.items = [];
+            state.pizzaItems = [];
             state.isLoaded = true;
             state.loadingRejected = true;
         });
@@ -83,8 +83,10 @@ const pizzasSlice = createSlice({
     // },
 });
 
-export const selectIsLoaded = (state: RootState) => state.pizzas.isLoaded;
-export const selectLoadingRejected = (state: RootState) => state.pizzas.loadingRejected;
-export const selectPizzas = (state: RootState) => state.pizzas.items;
+export const selectPizzas = (state: RootState) => state.pizzas;
+
+// export const selectIsLoaded = (state: RootState) => state.pizzas.isLoaded;
+// export const selectLoadingRejected = (state: RootState) => state.pizzas.loadingRejected;
+// export const selectPizzas = (state: RootState) => state.pizzas.items;
 
 export default pizzasSlice.reducer;
