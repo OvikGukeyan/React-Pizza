@@ -2,7 +2,21 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 const getTotalPrice = (arr: CartItem[]) => arr.reduce((sum, obj) => obj.price + sum, 0);
-const allItems = (state: CartSliceState) => Object.values(state.cartItems).flatMap(obj => obj.items);
+const calcAllItems = (obj: Items) => Object.values(obj).flatMap((obj) => obj.items);
+const cartAllItems = (state: CartSliceState) => calcAllItems(state.cartItems);
+
+const getCartFromLS = () => {
+    const cartData = localStorage.getItem('cart');
+    const cartItems = cartData ? JSON.parse(cartData) : {};
+    const allItems = calcAllItems(cartItems)
+    const totalPrice = getTotalPrice(allItems);
+    const totalCount =  allItems.length;
+    return {
+        cartItems,
+        totalPrice,
+        totalCount
+    }
+};
 
 
 export type CartItem = {
@@ -24,10 +38,12 @@ interface CartSliceState {
     totalCount: number;
 }
 
+const {cartItems, totalPrice, totalCount} = getCartFromLS();
+
 const initialState: CartSliceState = {
-    cartItems: {},
-    totalPrice: 0,
-    totalCount: 0,
+    cartItems,
+    totalPrice,
+    totalCount,
 };
 
 const cartSlice = createSlice({
@@ -40,8 +56,8 @@ const cartSlice = createSlice({
                 : state.cartItems[action.payload.id].items = [...state.cartItems[action.payload.id].items, action.payload];
             state.cartItems[action.payload.id].total = getTotalPrice(state.cartItems[action.payload.id].items);
             state.cartItems[action.payload.id].count = state.cartItems[action.payload.id].items.length;
-            state.totalCount = allItems(state).length;
-            state.totalPrice = getTotalPrice(allItems(state));
+            state.totalCount = cartAllItems(state).length;
+            state.totalPrice = getTotalPrice(cartAllItems(state));
         },
         clearCartItems: (state) => {
             if (window.confirm('Are you sure you want to clear the cart?')) {
@@ -54,16 +70,16 @@ const cartSlice = createSlice({
 
         deleteItem: (state, action: PayloadAction<number>) => {
             delete state.cartItems[action.payload];
-            state.totalCount = allItems(state).length;
-            state.totalPrice = getTotalPrice(allItems(state));
+            state.totalCount = cartAllItems(state).length;
+            state.totalPrice = getTotalPrice(cartAllItems(state));
         },
 
         itemPlus: (state, action: PayloadAction<CartItem>) => {
             state.cartItems[action.payload.id].items.push(action.payload);
             state.cartItems[action.payload.id].total = getTotalPrice(state.cartItems[action.payload.id].items);
             state.cartItems[action.payload.id].count = state.cartItems[action.payload.id].items.length;
-            state.totalCount = allItems(state).length;
-            state.totalPrice = getTotalPrice(allItems(state));
+            state.totalCount = cartAllItems(state).length;
+            state.totalPrice = getTotalPrice(cartAllItems(state));
         },
 
         itemMinus: (state, action: PayloadAction<number>) => {
@@ -77,8 +93,8 @@ const cartSlice = createSlice({
             }
 
 
-            state.totalCount = allItems(state).length;
-            state.totalPrice = getTotalPrice(allItems(state));
+            state.totalCount = cartAllItems(state).length;
+            state.totalPrice = getTotalPrice(cartAllItems(state));
         }
 
     }

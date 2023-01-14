@@ -11,47 +11,45 @@ import { useAppDispatch } from '../redux/store';
 
 export const Home = () => {
 
-    const {sortBy, category, searchValue, currentPage} = useSelector(selectFilters);
-    
-    const {cartItems} = useSelector(selectCart);
+    const { sortBy, category, searchValue, currentPage } = useSelector(selectFilters);
 
-    const {isLoaded, loadingRejected, pizzaItems} = useSelector(selectPizzas)
-    
-    
+    const { cartItems } = useSelector(selectCart);
+
+    const { isLoaded, loadingRejected, pizzaItems } = useSelector(selectPizzas)
+
+
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const isParam = useRef(false);
     const isMounted = useRef(false);
 
-    //We check the presence of parameters in the url, if they are, write them to redux
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        dispatch(fetchPizzas({ sortBy, category, searchValue, currentPage }));
+    }, [category, sortBy, searchValue, currentPage]);
+
     useEffect(() => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1)) as unknown as FilterSliceState;
             dispatch(setFilters(params))
-            isParam.current = true;
         }
     }, [])
-    //We check the absence of the parameters of the yurl, in case of absence we make a request for pizzas. If they are, the request will happen on the next render.Making the page scroll up.
-    
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (!isParam.current) { dispatch(fetchPizzas({ sortBy, category, searchValue, currentPage })) };
-        isParam.current = false;
-    }, [category, sortBy, searchValue, currentPage]);
 
-    //We check whether the url parameters were recorded, if yes, we write them in the address bar
+
     useEffect(() => {
         if (isMounted.current) {
             const queryString = qs.stringify({
                 sortBy,
                 category,
                 currentPage
-            })
-            navigate(`?${queryString}`);
+            }, { skipNulls: true })
+            navigate(`/?${queryString}`);
         }
-
         isMounted.current = true;
     }, [category, sortBy, currentPage]);
+
+
+
+    
 
     const handleChoicePopup = useCallback((obj: SortBy) => {
         dispatch(setSortBy(obj))
@@ -102,7 +100,7 @@ export const Home = () => {
 
             </div>)}
 
-            <Pagination onChangePage={onChangePage} />
+            <Pagination currentPage={currentPage} onChangePage={onChangePage} />
 
         </div>
     )
