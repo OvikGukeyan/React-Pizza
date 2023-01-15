@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setSearchValue } from '../../redux/slices/filtersSlice';
 
 
-export const Search: React.FC = React.memo(() => {
+const Search: React.FC = React.memo(() => {
     const dispatch = useDispatch();
     const [localSearchValue, setLocalSearchValue] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -43,3 +43,5 @@ export const Search: React.FC = React.memo(() => {
         </div>
     )
 })
+
+export default Search;

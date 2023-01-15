@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from ".";
+import { Button } from "./";
 import { CartItem } from "../redux/slices/cartSlice";
 
 type CartPizzaBlockProps = {
@@ -16,7 +16,7 @@ type CartPizzaBlockProps = {
   onItemMinus: (id: number) => void;
 }
 
-export const CartPizzaBlock: React.FC<CartPizzaBlockProps> = ({id, name, size, type, total, count, price, imageUrl, onDeleteItem, onItemPlus, onItemMinus }) => {
+const CartPizzaBlock: React.FC<CartPizzaBlockProps> = ({id, name, size, type, total, count, price, imageUrl, onDeleteItem, onItemPlus, onItemMinus }) => {
   const handleDeleteIten = () => {
     onDeleteItem(id)
   }
@@ -75,3 +75,5 @@ export const CartPizzaBlock: React.FC<CartPizzaBlockProps> = ({id, name, size, t
             </div>
   )
 }
+
+export default CartPizzaBlock;

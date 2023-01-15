@@ -1,15 +1,13 @@
-import { Categories } from "./Categories";
-import { Header } from "./Header";
-import { Button } from "./Button";
-import { SortPopup } from "./SortPopup";
-import { Loading } from "./PizzaBlock/Loading";
-import { CartPizzaBlock } from "./CartPizzaBlock";
-import { Search } from "./Search/Search";
-import { Pagination } from "./Pagination/Pagination";
-import { PizzaBlock } from "./PizzaBlock/PizzaBlock"
+export { default as Categories } from "./Categories";
+export { default as Header } from "./Header";
+export { default as Button } from "./Button";
+export { default as SortPopup } from "./SortPopup";
+export { default as Loading } from "./PizzaBlock/Loading";
+export { default as CartPizzaBlock } from "./CartPizzaBlock";
+export { default as Search } from "./Search/Search";
+export { default as Pagination } from "./Pagination/Pagination";
+export { default as PizzaBlock } from "./PizzaBlock/PizzaBlock"
  
 
 
 
-
-export { Categories, Header, Button, SortPopup, Loading, CartPizzaBlock, Search, Pagination, PizzaBlock };

@@ -7,7 +7,7 @@ type SortPopupProps = {
     sortBy: SortBy;
 }
 
-export const SortPopup: React.FC<SortPopupProps> = React.memo(({ handleChoicePopup, sortBy }) => {
+const SortPopup: React.FC<SortPopupProps> = React.memo(({ handleChoicePopup, sortBy }) => {
 
     const sortItems: SortBy[] = [
         { name: 'popular', type: 'rating', order: 'desc' },
@@ -82,3 +82,5 @@ export const SortPopup: React.FC<SortPopupProps> = React.memo(({ handleChoicePop
     )
 }
 )
+
+export default SortPopup;

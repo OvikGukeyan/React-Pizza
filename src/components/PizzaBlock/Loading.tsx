@@ -2,7 +2,7 @@ import React from "react";
 import ContentLoader from "react-content-loader";
 
 
-export const Loading: React.FC = () => {
+const Loading: React.FC = () => {
   return (
     <ContentLoader 
     className="pizza-block"
@@ -21,3 +21,5 @@ export const Loading: React.FC = () => {
   </ContentLoader>
   )
 }
+
+export default Loading;
