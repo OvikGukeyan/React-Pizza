@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Categories, Loading, SortPopup, Pagination, PizzaBlock } from '../components';
 import { useSelector } from 'react-redux';
 import { selectPizzas, fetchPizzas } from '../redux/slices/pizzasSlice';
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 
 
-export const Home = () => {
+const Home: React.FC = ()=> {
 
     const { sortBy, category, searchValue, currentPage } = useSelector(selectFilters);
 
@@ -105,3 +105,6 @@ export const Home = () => {
         </div>
     )
 }
+
+
+export default Home;

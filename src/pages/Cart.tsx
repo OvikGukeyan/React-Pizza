@@ -5,7 +5,7 @@ import { CartItem, clearCartItems, deleteItem, itemMinus, itemPlus, selectCart }
 import emptyCartImg  from "../assets/img/empty-cart.png";
 import { Link } from "react-router-dom";
 
-export const Cart = () => {
+const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const {cartItems, totalPrice, totalCount} = useSelector(selectCart);
   
@@ -102,3 +102,6 @@ export const Cart = () => {
     </div>
   )
 }
+
+
+export default Cart;
